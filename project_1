@@ -1,0 +1,40 @@
+import Utils.BaseStaticDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+
+public class TestCase_1 extends BaseStaticDriver {
+    public static void main(String[] args) {
+
+
+        driver.get("https://shopdemo.e-junkie.com/");
+        WebElement addToCart_eBook = driver.findElement(By.xpath("(//button[text()= ' Add To Cart'])[2]"));
+        addToCart_eBook.click();
+
+        WebElement iframe = driver.findElement(By.xpath("//iframe[@class='EJIframeV3 EJOverlayV3']"));
+        wait.until(ExpectedConditions.visibilityOf(iframe));
+        driver.switchTo().frame(iframe);
+
+        WebElement applyPromoCodeButton = driver.findElement(By.cssSelector("button[class='Apply-Button Show-Promo-Code-Button']"));
+        wait.until(ExpectedConditions.visibilityOf(applyPromoCodeButton));
+        applyPromoCodeButton.click();
+
+        WebElement promoCodeInput = driver.findElement(By.cssSelector("input[class='Promo-Code-Value']"));
+        wait.until(ExpectedConditions.visibilityOf(promoCodeInput));
+        promoCodeInput.sendKeys("123456789");
+
+        WebElement applyButton = driver.findElement(By.cssSelector("button[class='Promo-Apply']"));
+        applyButton.click();
+
+        WebElement invalid = driver.findElement(By.xpath("//span[text()='Invalid promo code']"));
+        String invalidText = invalid.getText();
+
+        if (invalidText.contains("Invalid promo code"))
+            System.out.println("you have successfully get the \"" + invalidText + "\" message");
+        else
+            System.out.println("text is not matching with " + invalidText);
+
+        BekleKapat();
+    }
+}
